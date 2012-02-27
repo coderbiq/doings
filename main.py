@@ -16,15 +16,11 @@
 #
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import util
-
-
-class MainHandler(webapp.RequestHandler):
-    def get(self):
-        self.response.out.write('Hello world!')
+from app import get_config
 
 
 def main():
-    application = webapp.WSGIApplication([('/', MainHandler)],
+    application = webapp.WSGIApplication(get_config().get('routers'),
                                          debug=True)
     util.run_wsgi_app(application)
 
