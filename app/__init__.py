@@ -13,16 +13,13 @@ class Config(object):
         self._load_config()
 
     def get(self, name):
-        value_tmp = None
+        value = self.configs;
         for path in name.split('/'):
-            if value_tmp == None:
-                if(self.configs.has_key(path)):
-                    value_tmp = self.configs[path]
+            if(value.has_key(path)):
+                value = value[path]
             else:
-                if(value_tmp.has_key(path)):
-                    value_tmp = value_tmp[path]
-
-        return value_tmp
+                return None
+        return value
 
     def _load_config(self):
         modules = os.listdir(self.app_root)
