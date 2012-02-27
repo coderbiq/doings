@@ -3,6 +3,10 @@
 import unittest
 import app
 
+EXTENDS_TEST_CONFIG = {
+    'module':{'version':'0.1'}
+    }
+
 
 class ConfigTest(unittest.TestCase):
 
@@ -15,3 +19,9 @@ class ConfigTest(unittest.TestCase):
     def testGetRouters(self):
         routers = app.get_config().get('routers');
         self.assertTrue(len(routers) > 1)
+
+    def test_extends_config(self):
+        config = app.get_config();
+        config.extends_config(EXTENDS_TEST_CONFIG, 'extends_test')
+
+        self.assertEqual(config.get('modules/extends_test/version'), '0.1')
