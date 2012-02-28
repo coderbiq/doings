@@ -4,6 +4,13 @@ runtime: python
 api_version: 1
 
 handlers:
+- url: /
+  static_files: client/index.html
+  upload: index\.html
+
+- url: /client
+  static_dir: client
+
 - url: /favicon\.ico
   static_files: favicon.ico
   upload: favicon\.ico
