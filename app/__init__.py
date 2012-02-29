@@ -12,8 +12,8 @@ class Config(object):
         供应用程序调用各种配置信息"""
     def __init__(self, app_root=None):
         self.configs = {}
-#        self.app_root = app_root
-#        self._load_config()
+        self.app_root = app_root
+        self._load_config()
 
     def get(self, name):
         """获取指定字典路径下的配置项，如果没有找到相关配置则返回None"""
@@ -46,7 +46,7 @@ class Config(object):
             if self._is_module(module_name):
                 module = __import__(module_name, globals(), locals(), 
                                     ['CONFIGS'])
-                self.extends_config(module.CONFIGS, module_name)
+                self.extends(module.CONFIGS)
 
     def _is_module(self, module_name):
         is_module = True

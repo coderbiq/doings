@@ -11,8 +11,8 @@ CONFIGS = {
     't2': {
         'abc': 'rrr'
         },
-    'module': {
-            'version': '0.2'
+    'modules': {
+            't2':{'version': '0.2'}
         },
     'routers': [
         ('/tmodule2', TestHandler)

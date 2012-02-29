@@ -39,22 +39,18 @@ CONFIG = {
 
 class ConfigTest(unittest.TestCase):
 
-#    def testGet(self):
-#        config = app.get_config()
-#        self.assertEqual(config.get('modules/test/version'), '0.1')
-#        self.assertEqual(config.get('modules/t2/version'), '0.2')
-#        self.assertEqual(config.get('t2/abc'), 'rrr')
-#
-#    def testGetRouters(self):
-#        routers = app.get_config().get('routers');
-#        self.assertTrue(len(routers) > 1)
+    def test_get(self):
+        config = app.get_config()
+        self.assertEqual(config.get('modules/test/version'), '0.1')
+        self.assertEqual(config.get('modules/t2/version'), '0.2')
+        self.assertEqual(config.get('t2/abc'), 'rrr')
+
+    def test_get_routers(self):
+        routers = app.get_config().get('routers');
+        self.assertTrue(len(routers) > 1)
 
     def test_extends_config(self):
         config = app.get_config()
         config.extends(CONFIG_1)
         config.extends(CONFIG_2)
-
         self.assertEqual(config.configs, CONFIG)
-
-if __name__ == '__main__':
-    unittest.main()

@@ -7,8 +7,8 @@ class TestHandler(webapp.RequestHandler):
         self.response.out.write('test handler get')
 
 CONFIGS = {
-    'module': {
-            'version': '0.1'
+    'modules': {
+        'test':{'version': '0.1'}
         },
     'routers':[
         ('/tmodule', TestHandler)
