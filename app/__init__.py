@@ -41,12 +41,14 @@ class Config(object):
         return target
 
     def _load_config(self):
-        modules = os.listdir(self.app_root)
-        for module_name in modules:
-            if self._is_module(module_name):
+        modules = open(os.path.join(self.app_root, 'modules'))
+        try:
+            for module_name in modules:
                 module = __import__(module_name, globals(), locals(), 
                                     ['CONFIGS'])
                 self.extends(module.CONFIGS)
+        finally:
+            modules.close()
 
     def _is_module(self, module_name):
         is_module = True
@@ -54,3 +56,14 @@ class Config(object):
         if not os.path.isdir(module_path):
             is_module = False
         return is_module
+
+if __name__ == '__main__':
+    modules = open('./modules')
+    try:
+        for module_name in modules.readlines():
+            path = os.path.join(os.curdir, module_name)
+            print type(path)
+            print os.path.isdir(path)
+            print '\n'
+    finally:
+        modules.close()
