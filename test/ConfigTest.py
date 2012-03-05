@@ -44,6 +44,7 @@ class ConfigTest(unittest.TestCase):
         self.assertEqual(config.get('modules/test/version'), '0.1')
         self.assertEqual(config.get('modules/t2/version'), '0.2')
         self.assertEqual(config.get('t2/abc'), 'rrr')
+        self.assertEqual(config.get('t2/ert'), 'qqqq')
 
     def test_get_routers(self):
         routers = app.get_config().get('routers');

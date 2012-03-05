@@ -44,26 +44,21 @@ class Config(object):
         modules = open(os.path.join(self.app_root, 'modules'))
         try:
             for module_name in modules:
+                module_name = module_name.replace('\n','')
                 module = __import__(module_name, globals(), locals(), 
                                     ['CONFIGS'])
                 self.extends(module.CONFIGS)
         finally:
             modules.close()
 
-    def _is_module(self, module_name):
-        is_module = True
-        module_path = os.path.join(self.app_root, module_name)
-        if not os.path.isdir(module_path):
-            is_module = False
-        return is_module
 
 if __name__ == '__main__':
     modules = open('./modules')
     try:
         for module_name in modules.readlines():
             path = os.path.join(os.curdir, module_name)
-            print type(path)
-            print os.path.isdir(path)
-            print '\n'
+            print path.replace('\n','')
+            print os.path.isdir(path.replace('\n',''))
+#            print '\n'
     finally:
         modules.close()

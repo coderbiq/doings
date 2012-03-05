@@ -9,7 +9,8 @@ class TestHandler(webapp.RequestHandler):
 
 CONFIGS = {
     't2': {
-        'abc': 'rrr'
+        'abc': 'rrr',
+        'ert': 'qqqq'
         },
     'modules': {
             't2':{'version': '0.2'}
