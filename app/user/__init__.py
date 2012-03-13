@@ -4,6 +4,7 @@ from google.appengine.api import users
 from google.appengine.ext import webapp
 import app
 
+
 class GoogleLoginHandler(webapp.RequestHandler):
     def get(self):
         self.response.out.write('<a href="'+GoogleAccountType().get_login_url()+'">login</a>')
@@ -36,18 +37,31 @@ class AccountType(object):
     def get_login_url(self):
         return self.login_url
 
+    @staticmethod
+    def get_code():
+        return None
+
 
 class Account(db.Model):
     type_code = db.StringProperty(required=True)
     user = db.ReferenceProperty(User, indexed=True)
-    open_id = db.IntegerProperty()
+    open_id = db.IntegerProperty(required=True)
     created = db.DateTimeProperty(auto_now_add=True)
     updated = db.DateTimeProperty(auto_now=True)
+
+    @staticmethod
+    def load_by_open_id(open_id, type_code):
+        return Account.all().filter('open_id =', open_id)\
+                .filter('type_code =', type_code).get()
 
 
 class GoogleAccountType(AccountType):
     def __init__(self):
         self.login_url = users.create_login_url('/loginback?type=google')
+
+    @staticmethod
+    def get_code():
+        return u'google'
 
 
 CONFIGS = {
@@ -58,6 +72,6 @@ CONFIGS = {
         ],
     'user':{
         # 用户帐户类型
-        'account_types':{'google':GoogleAccountType()}
+        'account_types':{GoogleAccountType.get_code():GoogleAccountType()}
         }
     }
