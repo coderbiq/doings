@@ -1,6 +1,21 @@
 #-*-coding:utf-8-*-
 from google.appengine.ext import db
+from google.appengine.api import users
+from google.appengine.ext import webapp
 import app
+
+class GoogleLoginHandler(webapp.RequestHandler):
+    def get(self):
+        self.response.out.write('<a href="'+GoogleAccountType().get_login_url()+'">login</a>')
+
+
+class LoginBackHandler(webapp.RequestHandler):
+    def get(self):
+        html = ''
+        user = users.get_current_user()
+        html = html + "user nickname %s" % user.nickname()
+        html = html + "login type %s" % self.request.get('type')
+        self.response.out.write(html)
 
 
 def get_login_urls():
@@ -32,12 +47,15 @@ class Account(db.Model):
 
 class GoogleAccountType(AccountType):
     def __init__(self):
-        self.login_url = 'abc'
+        self.login_url = users.create_login_url('/loginback?type=google')
 
 
 CONFIGS = {
     'modules': {'user':{'version':'0.1'}},
-    'routers':[],
+    'routers':[
+        ('/google_login', GoogleLoginHandler),
+        ('/loginback', LoginBackHandler)
+        ],
     'user':{
         # 用户帐户类型
         'account_types':{'google':GoogleAccountType()}
