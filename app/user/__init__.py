@@ -13,6 +13,14 @@ def get_current_user():
     return None
 
 
+class BindUserHandler(webapp.RequestHandler):
+    def get(self):
+        pass
+
+    def post(self):
+        pass
+
+
 class GoogleLoginHandler(webapp.RequestHandler):
     def get(self):
         self.response.out.write('<a href="'+GoogleAccountType().get_login_url()+'">login</a>')
@@ -76,10 +84,12 @@ CONFIGS = {
     'modules': {'user':{'version':'0.1'}},
     'routers':[
         ('/google_login', GoogleLoginHandler),
-        ('/loginback', LoginBackHandler)
+        ('/loginback', LoginBackHandler),
+        ('/bind_user', BindUserHandler)
         ],
     'user':{
         # 用户帐户类型
-        'account_types':{GoogleAccountType.get_code():GoogleAccountType()}
+        'account_types':{GoogleAccountType.get_code():GoogleAccountType()},
+        'bind_user_url':'/bind_user'
         }
     }
