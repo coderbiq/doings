@@ -2,7 +2,15 @@
 from google.appengine.ext import db
 from google.appengine.api import users
 from google.appengine.ext import webapp
+from gaesessions import get_current_session
 import app
+
+
+def get_current_user():
+    session = get_current_session()
+    if session.has_key('user_id'):
+        return User.get_by_id(session['user_id'])
+    return None
 
 
 class GoogleLoginHandler(webapp.RequestHandler):
