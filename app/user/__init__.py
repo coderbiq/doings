@@ -15,10 +15,10 @@ def get_current_user():
 
 class BindUserHandler(webapp.RequestHandler):
     def get(self):
-        pass
+        self.response.out.write('bind user')
 
     def post(self):
-        pass
+        self.response.out.write('bind user')
 
 
 class GoogleLoginHandler(webapp.RequestHandler):
@@ -60,8 +60,10 @@ class AccountType(object):
 
 class Account(db.Model):
     type_code = db.StringProperty(required=True)
-    user = db.ReferenceProperty(User, indexed=True)
     open_id = db.IntegerProperty(required=True)
+    user = db.ReferenceProperty(User, indexed=True)
+    email = db.EmailProperty()
+    nickname = db.StringProperty()
     created = db.DateTimeProperty(auto_now_add=True)
     updated = db.DateTimeProperty(auto_now=True)
 
@@ -69,6 +71,10 @@ class Account(db.Model):
     def load_by_open_id(open_id, type_code):
         return Account.all().filter('open_id =', open_id)\
                 .filter('type_code =', type_code).get()
+
+    @staticmethod
+    def create_key_name(open_id, type_code):
+        return '_'.join([type_code, open_id])
 
 
 class GoogleAccountType(AccountType):
