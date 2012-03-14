@@ -28,11 +28,19 @@ class GoogleLoginHandler(webapp.RequestHandler):
 
 class LoginBackHandler(webapp.RequestHandler):
     def get(self):
-        html = ''
-        user = users.get_current_user()
-        html = html + "user nickname %s" % user.nickname()
-        html = html + "login type %s" % self.request.get('type')
-        self.response.out.write(html)
+        google_user = users.get_current_user()
+        type_code_value = GoogleAccountType.get_code()
+        open_id_value = google_user.federated_identity()
+        account_key_name = Account.create_key_name(type_code=type_code_value, open_id=open_id_value)
+        account = Account.get_by_key_name(account_key_name)
+        if account == None:
+            account = Account(key_name=account_key_name, type_code=type_code_value, open_id=open_id_value,\
+                                email=google_user.email(), nickname=google_user.nickname())
+            account.put()
+        if account.canBindUser():
+            add_account_to_bind_list(account)
+            self.redirect(app.get_config().get('user/bind_user_url'))
+        set_current_user(account.user)
 
 
 def get_login_urls():
