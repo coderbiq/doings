@@ -1,9 +1,40 @@
 #-*-coding:utf-8-*-
+
+"""用户模块"""
+
+__version__ = '0.1.0'
+__module_name__ = 'user'
+__author__ = 'Elvis Bi <elvis@dwenzi.com>'
+__all__ = [
+    'get_current_user',
+    'get_all_account_type',
+    'Account',
+    'AccountType',
+    'GoogleAccountType'
+    'User',
+    'GoogleLoginBackHandler',
+    'BindUserHandler',
+    ]
+
 from google.appengine.ext import db
 from google.appengine.api import users
 from google.appengine.ext import webapp
 from gaesessions import get_current_session
 import app
+
+__module_config__ = {
+    'modules': {'user':{'version':'0.1'}},
+    'routers':[
+        ('/google_login', GoogleLoginHandler),
+        ('/loginback', LoginBackHandler),
+        ('/bind_user', BindUserHandler)
+        ],
+    'user':{
+        # 用户帐户类型
+        'account_types':{GoogleAccountType.get_code():GoogleAccountType()},
+        'bind_user_url':'/bind_user'
+        }
+    } 
 
 
 def get_current_user():
